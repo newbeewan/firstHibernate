@@ -2,9 +2,10 @@ package com.ib.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtil {
 	/*
@@ -12,11 +13,26 @@ public class HibernateUtil {
 	 */
 	private static final ThreadLocal<Session> sessionLT = new ThreadLocal<Session>();
 
-	private static final SessionFactory sessionFactory;
-	static {
-		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure()
-				.build();
-		sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+	private static final SessionFactory sessionFactory = buildSessionFactory();
+
+	/**
+	 * Creation de la session factory via le service registry d'hibernate
+	 */
+	private static SessionFactory buildSessionFactory() {
+		try {
+			// Create the ServiceRegistry from hibernate.cfg.xml
+			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+					.configure("hibernate.cfg.xml").build();
+
+			// Create a metadata sources using the specified service registry.
+			Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
+
+			return metadata.getSessionFactoryBuilder().build();
+		} catch (Throwable ex) {
+
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
+		}
 	}
 
 	public static SessionFactory getSessionFactory() {

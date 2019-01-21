@@ -5,16 +5,36 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ib.data.Client;
+import com.ib.data.Livre;
 
 public class HibernateUtilTest {
 	private final Logger logger = LoggerFactory.getLogger(HibernateUtilTest.class);
 
+	@Test
+	public void annotationSessionFactory() {
+		ServiceRegistry standardRegistry =
+		        new StandardServiceRegistryBuilder().configure("hibernate-annotation.cfg.xml").build();
+
+		MetadataSources sources = new MetadataSources( standardRegistry )
+		    .addAnnotatedClass( Livre.class );
+		Metadata metadata = sources.getMetadataBuilder().build();
+		SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+		Session session = sessionFactory.openSession();
+		List<Livre> livres = session.createQuery("From Livre", Livre.class).getResultList();
+		assertNotNull(livres);
+	}
+	
 	@Test
 	public void testGetCurrentSession() {
 		Session session = HibernateUtil.getCurrentSession();
