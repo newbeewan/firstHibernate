@@ -2,6 +2,7 @@ package com.ib.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -60,6 +61,10 @@ public class HibernateUtil {
 			session.close();
 			sessionLT.remove();
 		}
+	}
+	
+	public static Transaction beginTransaction() {
+		return getCurrentSession().beginTransaction();
 	}
 
 }

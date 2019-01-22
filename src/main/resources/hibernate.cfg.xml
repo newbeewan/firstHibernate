@@ -20,6 +20,8 @@
 		<!-- Déclaration des mappings des Entités -->
 		<mapping resource="com/ib/data/Client.hbm.xml" />
 		<mapping class="com.ib.data.Livre"/>
+		<mapping class="com.ib.data.Team"/>
+		<mapping class="com.ib.data.Coach"/>
 		
 	</session-factory>
 </hibernate-configuration>

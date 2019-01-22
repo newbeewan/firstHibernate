@@ -1,5 +1,6 @@
 package com.ib.data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +16,7 @@ public class Team {
 	
 	private String name;
 	
-	@ManyToOne()
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Coach coach;
 
 	public Integer getId() {
