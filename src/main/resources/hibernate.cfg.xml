@@ -22,6 +22,8 @@
 		<mapping class="com.ib.data.Livre"/>
 		<mapping class="com.ib.data.Team"/>
 		<mapping class="com.ib.data.Coach"/>
+		<mapping class="com.ib.data.Personne"/>
+		<mapping class="com.ib.data.Loisir"/>
 		
 	</session-factory>
 </hibernate-configuration>
